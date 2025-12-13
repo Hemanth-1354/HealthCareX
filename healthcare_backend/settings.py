@@ -81,8 +81,7 @@ WSGI_APPLICATION = 'healthcare_backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-
-DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 DATABASES = {
     'default': {
