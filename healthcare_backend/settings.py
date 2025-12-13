@@ -88,14 +88,17 @@ import dj_database_url
 
 # If DATABASE_URL is set (Render / production), use it.
 # Otherwise fall back to your individual env vars for local dev.
-if os.getenv("DATABASE_URL"):
+import os
+import dj_database_url
+
+if os.getenv("DATABASE_URL"):  # Render / any cloud
     DATABASES = {
         "default": dj_database_url.config(
             default=os.getenv("DATABASE_URL"),
             conn_max_age=600,
         )
     }
-else:
+else:  # Local dev
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
