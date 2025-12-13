@@ -1,114 +1,140 @@
-# Healthcare Backend - Django Project
+This is a single, copy‑paste‑ready README you can drop into `README.md`.
+
+```markdown
+# Healthcare Backend – Django + DRF
 
 ## Overview
-
-This project is a **backend system for a healthcare application** built using Django, Django REST Framework (DRF), and PostgreSQL. It allows users to register, log in, and manage patients, doctors, and patient-doctor assignments securely.
+This project is a backend system for a healthcare application built with Django, Django REST Framework (DRF), and PostgreSQL. It provides APIs for user registration/login, managing patients and doctors, and assigning doctors to patients using secure JWT-based authentication.
 
 ## Features
+- User registration and JWT authentication
+- CRUD operations for Patients and Doctors
+- Assign multiple Doctors to a Patient (patient–doctor mappings)
+- Auth-protected endpoints using Bearer token
+- PostgreSQL database with Django ORM
+- `.env`-based configuration for secrets and DB settings
+- VSCode REST Client test suite (`tests.rest`)
 
-* User Registration and JWT Authentication
-* CRUD for Patients and Doctors
-* Assign Doctors to Patients (Mapping)
-* Secure APIs with token-based authorization
-* PostgreSQL database integration
+## Tech Stack
+- Python 3.x  
+- Django 4.x  
+- Django REST Framework  
+- djangorestframework-simplejwt  
+- PostgreSQL  
+- python-dotenv (or python-decouple) for environment variables  
+- VSCode REST Client (optional, for testing)
 
-## Technologies Used
+## Setup & Installation
 
-* Python 3.x
-* Django 4.x
-* Django REST Framework
-* djangorestframework-simplejwt (JWT Authentication)
-* PostgreSQL
+1. **Clone the repository**
+   ```
+   git clone <repo_url>
+   cd healthcare_backend
+   ```
 
-## Installation
+2. **Create and activate virtual environment**
+   ```
+   python -m venv venv
+   venv\Scripts\activate      # Windows
+   source venv/bin/activate   # macOS/Linux
+   ```
 
-1. Clone the repository:
+3. **Install dependencies**
+   ```
+   pip install -r requirements.txt
+   ```
 
-```bash
-git clone <repo_url>
-cd healthcare_backend
-```
+4. **Configure environment variables**
 
-2. Create virtual environment and activate:
+   Create a `.env` file in the project root:
 
-```bash
-python -m venv venv
-venv\Scripts\activate   # Windows
-source venv/bin/activate  # Linux/Mac
-```
+   ```
+   SECRET_KEY=<your_django_secret_key>
+   DEBUG=True
+   DB_NAME=healthcare_db
+   DB_USER=postgres
+   DB_PASSWORD=<your_password>
+   DB_HOST=localhost
+   DB_PORT=5432
+   ```
 
-3. Install dependencies:
+   Ensure `.env` is listed in `.gitignore` so secrets are not committed.
 
-```bash
-pip install -r requirements.txt
-```
+5. **Apply migrations**
+   ```
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
 
-4. Configure `settings.py` with your PostgreSQL credentials.
-5. Run migrations:
+6. **Create superuser (optional)**
+   ```
+   python manage.py createsuperuser
+   ```
 
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-6. Create superuser:
-
-```bash
-python manage.py createsuperuser
-```
-
-7. Run the server:
-
-```bash
-python manage.py runserver
-```
+7. **Run the development server**
+   ```
+   python manage.py runserver
+   ```
 
 ## API Endpoints
 
-* **Authentication**
+### Authentication
+- `POST /api/auth/register/` – Register a new user  
+- `POST /api/auth/login/` – Obtain JWT access/refresh tokens  
 
-  * POST `/api/auth/register/` - Register a new user
-  * POST `/api/auth/login/` - Login and get JWT token
-* **Patients**
+### Patients
+- `POST /api/patients/` – Create patient (auth required)  
+- `GET /api/patients/` – List patients for logged-in user (auth)  
+- `GET /api/patients/<id>/` – Retrieve single patient (auth)  
+- `PUT /api/patients/<id>/` – Update patient (auth)  
+- `DELETE /api/patients/<id>/` – Delete patient (auth)  
 
-  * POST `/api/patients/` - Add patient
-  * GET `/api/patients/` - List patients
-  * GET `/api/patients/<id>/` - Get patient
-  * PUT `/api/patients/<id>/` - Update patient
-  * DELETE `/api/patients/<id>/` - Delete patient
-* **Doctors**
+### Doctors
+- `POST /api/doctors/` – Create doctor (auth)  
+- `GET /api/doctors/` – List all doctors (auth)  
+- `GET /api/doctors/<id>/` – Retrieve single doctor (auth)  
+- `PUT /api/doctors/<id>/` – Update doctor (auth)  
+- `DELETE /api/doctors/<id>/` – Delete doctor (auth)  
 
-  * POST `/api/doctors/` - Add doctor
-  * GET `/api/doctors/` - List doctors
-  * GET `/api/doctors/<id>/` - Get doctor
-  * PUT `/api/doctors/<id>/` - Update doctor
-  * DELETE `/api/doctors/<id>/` - Delete doctor
-* **Mappings**
-
-  * POST `/api/mappings/` - Assign doctor to patient
-  * GET `/api/mappings/` - List all mappings
-  * GET `/api/mappings/<patient_id>/` - Get mappings for a patient
-  * DELETE `/api/mappings/<id>/` - Remove a doctor from a patient
+### Patient–Doctor Mappings
+- `POST /api/mappings/` – Assign doctor to patient (auth)  
+- `GET /api/mappings/` – List all mappings (auth)  
+- `GET /api/mappings/<patient_id>/` – Get all doctors for a patient (auth)  
+- `DELETE /api/mappings/<id>/` – Remove a doctor from a patient (auth)  
 
 ## Testing
 
-Use Postman to test APIs. Set **Authorization → Bearer Token** with the JWT access token received from login.
+### VSCode REST Client
+
+A `tests.rest` (or `tests.http`) file contains a full suite of requests for this API.
+
+Usage:
+1. Install the **REST Client** extension in VSCode.  
+2. Open `tests.rest`.  
+3. Click `Send Request` above any request to execute it.  
+4. After calling the login endpoint, copy the `access` token from the JSON response and replace the `{{ACCESS_TOKEN}}` placeholder (or `<ACCESS_TOKEN>` if you use that style) in subsequent protected requests.
+
+### Manual Testing (Postman / curl)
+
+For protected endpoints add:
+
+- Header: `Authorization: Bearer <ACCESS_TOKEN>`  
+- Header: `Content-Type: application/json` for POST/PUT requests  
 
 ## Admin Panel
-
-Access Django admin at:
+Access the Django admin at:
 
 ```
 http://127.0.0.1:8000/admin/
 ```
 
-Manage Users, Patients, Doctors, and Mappings from the admin interface.
+Login with the superuser to manage Users, Patients, Doctors, and Mappings through the web interface.
 
 ## Notes
-
-* The `user` field in patients and mappings is automatically set from the logged-in user.
-* JWT token is required for all protected endpoints.
+- Sensitive settings (SECRET_KEY, DB credentials, DEBUG) are loaded from `.env`.  
+- Patient-related endpoints are scoped to the authenticated user.  
+- JWT tokens are required for protected endpoints; expired or invalid tokens return `401 Unauthorized`.  
 
 ## License
-
-This project is for educational purposes.
+This project is intended for learning and demonstration purposes.
+```
