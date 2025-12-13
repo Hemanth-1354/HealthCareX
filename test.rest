@@ -1,0 +1,158 @@
+### Healthcare Backend - Full Test Suite (VSCode REST Client)
+
+### 1 Register User
+
+### 1) Register
+POST http://127.0.0.1:8000/api/auth/register/
+Content-Type: application/json
+
+{
+  "username": "XXXXXX",
+  "email": "XXXXX@gmail.com",
+  "password": "YYYYYY"
+}
+
+###
+
+### 2 Login User
+
+POST http://127.0.0.1:8000/api/auth/login/
+Content-Type: application/json
+
+{
+"username": "XXXXXX",
+"password": "YYYYYY"
+}
+
+###
+
+### 3 Create Patient
+
+POST http://127.0.0.1:8000/api/patients/
+Content-Type: application/json
+Authorization: Bearer <ACCESS_TOKEN>
+
+{
+"name": "HK",
+"age": 25
+}
+
+###
+
+### 4 Get All Patients
+
+GET http://127.0.0.1:8000/api/patients/
+Authorization: Bearer <ACCESS_TOKEN>
+
+###
+
+### 5 Get Single Patient
+
+GET http://127.0.0.1:8000/api/patients/2/
+Authorization: Bearer <ACCESS_TOKEN>
+
+###
+
+### 6 Update Patient
+
+PUT http://127.0.0.1:8000/api/patients/1/
+Content-Type: application/json
+Authorization: Bearer <ACCESS_TOKEN>
+
+{
+"name": "Alice Updated",
+"age": 31
+}
+
+###
+
+### 7 Delete Patient
+
+DELETE http://127.0.0.1:8000/api/patients/1/
+Authorization: Bearer <ACCESS_TOKEN>
+
+###
+
+### 8 Create Doctor
+
+POST http://127.0.0.1:8000/api/doctors/
+Content-Type: application/json
+Authorization: Bearer <ACCESS_TOKEN>
+
+{
+"name": "Dr Nolan",
+"specialization": "Physiotherapy"
+}
+
+###
+
+### 9 Get All Doctors
+
+GET http://127.0.0.1:8000/api/doctors/
+Authorization: Bearer <ACCESS_TOKEN>
+
+###
+
+### 10 Update Doctor
+
+PUT http://127.0.0.1:8000/api/doctors/1/
+Content-Type: application/json
+Authorization: Bearer <ACCESS_TOKEN>
+
+{
+"name": "Dr John Smith",
+"specialization": "Neurology"
+}
+
+###
+
+### 11 Delete Doctor
+
+DELETE http://127.0.0.1:8000/api/doctors/1/
+Authorization: Bearer <ACCESS_TOKEN>
+
+###
+
+### 12 Assign Doctor to Patient
+
+POST http://127.0.0.1:8000/api/mappings/
+Content-Type: application/json
+Authorization: Bearer <ACCESS_TOKEN>
+
+{
+"patient": 1,
+"doctor": 3
+}
+
+###
+
+### 13 Get All Mappings
+
+GET http://127.0.0.1:8000/api/mappings/2/
+Authorization: Bearer <ACCESS_TOKEN>
+
+###
+
+### 14 Get Doctors for a Patient
+
+GET http://127.0.0.1:8000/api/mappings/1/
+
+###
+
+### 15 Delete Mapping
+
+DELETE http://127.0.0.1:8000/api/mappings/1/
+Authorization: Bearer <ACCESS_TOKEN>
+
+###
+
+### 16 Negative Test - No Token
+
+GET http://127.0.0.1:8000/api/patients/
+
+###
+
+### 17 Negative Test - Wrong Token
+
+GET http://127.0.0.1:8000/api/patients/
+Authorization: Bearer <WRONG_TOKEN>
