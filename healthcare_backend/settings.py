@@ -26,7 +26,11 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "healthcarex.onrender.com",
+]
 
 
 # Application definition
@@ -83,22 +87,18 @@ WSGI_APPLICATION = 'healthcare_backend.wsgi.application'
 
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
+# fallback for local 
 import os
 import dj_database_url
 
-# If DATABASE_URL is set (Render / production), use it.
-# Otherwise fall back to your individual env vars for local dev.
-import os
-import dj_database_url
-
-if os.getenv("DATABASE_URL"):  # Render / any cloud
+if os.getenv("DATABASE_URL"):  # Render 
     DATABASES = {
         "default": dj_database_url.config(
             default=os.getenv("DATABASE_URL"),
             conn_max_age=600,
         )
     }
-else:  # Local dev
+else:  # Local
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
