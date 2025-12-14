@@ -96,7 +96,6 @@ if os.getenv("DATABASE_URL"):  # Render
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=600,
-            ssl_require=True,
         )
     }
 else:  # Local
@@ -110,7 +109,6 @@ else:  # Local
             "PORT": os.getenv("DB_PORT", "5432"),
         }
     }
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
