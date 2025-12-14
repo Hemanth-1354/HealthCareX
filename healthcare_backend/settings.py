@@ -90,12 +90,13 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 # fallback for local 
 import os
 import dj_database_url
+import dj_database_url
 
-if os.getenv("DATABASE_URL"):  # Render 
+if os.getenv("DATABASE_URL"):  # Render
     DATABASES = {
         "default": dj_database_url.config(
-            default=os.getenv("DATABASE_URL"),
             conn_max_age=600,
+            ssl_require=True,
         )
     }
 else:  # Local
@@ -109,8 +110,6 @@ else:  # Local
             "PORT": os.getenv("DB_PORT", "5432"),
         }
     }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -164,3 +163,10 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ),
 }
+
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
